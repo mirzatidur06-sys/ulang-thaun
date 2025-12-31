@@ -123,11 +123,11 @@ def home():
 <div id="pageGallery">
     <h2 style="color:#ff6c99; font-family:'Caveat', cursive; font-size:35px; text-align:center;">Our Memories ❤️</h2>
     <div class="gallery-list">
-        <div class="photo-item"><img src="https://files.catbox.moe/6hroy9.png "><p>ini pas kita main spiderman, aku jadi rajanya kamu ratunya.</p></div>
-        <div class="photo-item"><img src="https://files.catbox.moe/csvjkk.png "><p>foto berdua pertama kali</p></div>
-        <div class="photo-item"><img src="https://files.catbox.moe/csvjkk.png "><p>Senyum kamu favorit aku ✨</p></div>
-        <div class="photo-item"><img src="https://picsum.photos/600/350?random=4"><p>Definisi bahagia itu sederhana.</p></div>
-        <div class="photo-item"><img src="https://picsum.photos/600/350?random=5"><p>Terima kasih sudah bertahan ya.</p></div>
+        <div class="photo-item"><img src="https://files.catbox.moe/wfyphd.png"><p>Foto berdua kita yang menurutku paling romantis+lucu</p></div>
+        <div class="photo-item"><img src="https://files.catbox.moe/na59r1.png"><p>Ni aku gendong orang terlucu di dunia</p></div>
+        <div class="photo-item"><img src="https://files.catbox.moe/ezpsil.png"><p>Pas kita main konon ni yang kamu bilang berani</p></div>
+        <div class="photo-item"><img src="https://files.catbox.moe/2o84c5.png"><p>Pas naik gunung ni awal awal hts</p></div>
+        <div class="photo-item"><img src="https://files.catbox.moe/m4gjt7.png"><p>Makasih yahh dah mau nolongin</p></div>
         <div class="photo-item"><img src="https://picsum.photos/600/350?random=6"><p>Semoga kita begini terus.</p></div>
         <div class="photo-item"><img src="https://picsum.photos/600/350?random=7"><p>Kamu yang terbaik!</p></div>
         <div class="photo-item"><img src="https://picsum.photos/600/350?random=8"><p>Sehat selalu ya kamu.</p></div>
