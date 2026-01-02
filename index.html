@@ -6,13 +6,36 @@
     <title>Birthday Gift For You</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Caveat:wght@700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --pink-primary: #ff82a9;
+            --pink-hover: #ff6c99;
+            --bg-gradient: linear-gradient(135deg,#ffd3e9,#cfe7ff);
+        }
+
         body {
             margin:0; font-family:'Poppins', sans-serif;
-            background: linear-gradient(135deg,#ffd3e9,#cfe7ff);
+            background: var(--bg-gradient);
             min-height:100vh; display:flex; justify-content:center; align-items:center;
             overflow-x:hidden; position:relative;
         }
         
+        /* Animasi Transisi Halaman */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .page { 
+            position:absolute; width:90%; max-width:450px; text-align:center; 
+            display: none; opacity: 0;
+        }
+
+        .page.show { 
+            display: block;
+            animation: slideUpFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        /* Emblem Floating */
         .emblem-wrapper {
             position:fixed; top:15px; right:15px; width:70px; height:70px; 
             animation: emblemFloat 3s ease-in-out infinite; z-index: 100;
@@ -23,45 +46,41 @@
         }
         .emblem { width:100%; filter: drop-shadow(0 0 5px rgba(0,0,0,0.1)); }
 
-        .page { 
-            position:absolute; width:90%; max-width:450px; text-align:center; 
-            transition: all 0.6s ease; opacity:0; pointer-events:none; display: none;
-        }
-        .show { 
-            opacity:1 !important; pointer-events:auto !important; 
-            transform:translateY(0) !important; position: relative; display: block; 
-        }
-
         .btn {
-            padding:12px 25px; background:#ff82a9; color:white; border:none; 
+            padding:12px 25px; background: var(--pink-primary); color:white; border:none; 
             border-radius:50px; font-size:16px; font-weight:600; cursor:pointer; 
             transition:.3s; box-shadow: 0 4px 15px rgba(255,130,169,0.4); margin-top: 15px;
         }
-        .btn:hover { transform:scale(1.05); background:#ff6c99; }
+        .btn:hover { transform:scale(1.05); background: var(--pink-hover); }
         
         .card { 
             background:#fff; border-radius:20px; padding:25px; 
             box-shadow:0 15px 35px rgba(0,0,0,0.1); margin-bottom: 20px;
         }
 
+        /* Timer Styles */
         .timer-wrapper { margin-top: 20px; display: flex; justify-content: center; gap: 10px; }
         .time-unit { background: white; padding: 10px; border-radius: 10px; min-width: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .time-unit span { display: block; font-weight: bold; color: #ff82a9; font-size: 20px; }
+        .time-unit span { display: block; font-weight: bold; color: var(--pink-primary); font-size: 20px; }
         .time-unit label { font-size: 9px; text-transform: uppercase; color: #888; }
 
         #giftEmoji { font-size:90px; cursor:pointer; margin-bottom: 20px; animation: giftBounce 1.2s ease-in-out infinite; }
         @keyframes giftBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
+        /* Gallery Styles with Stagger Animation */
         #pageGallery { display: none; width: 100%; max-width: 600px; padding: 20px; box-sizing: border-box; }
         .gallery-list { display: flex; flex-direction: column; gap: 25px; width: 100%; }
+        
         .photo-item { 
             background: white; padding: 12px; border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08); transform: rotate(-1deg);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08); 
+            opacity: 0; transform: translateY(20px);
+            transition: all 0.6s ease-out;
         }
-        .photo-item:nth-child(even) { transform: rotate(1deg); }
-        .photo-item img { 
-            width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 5px;
-        }
+        .photo-item.visible { opacity: 1; transform: translateY(0) rotate(-1deg); }
+        .photo-item:nth-child(even).visible { transform: translateY(0) rotate(1deg); }
+        
+        .photo-item img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 5px; }
         .photo-item p { font-family: 'Caveat', cursive; font-size: 20px; margin: 10px 0 0 0; color: #444; }
 
         textarea {
@@ -153,43 +172,45 @@
 </div>
 
 <script>
-// TARGET WAKTU: SUDAH LEWAT (BISA DIBUKA SEKARANG)
 const targetDate = new Date("Dec 31, 2025 20:00:00").getTime();
 let userNama = "";
 let userUmur = "";
 const nomorWA = "6281264247474"; 
 
+// Logic Timer
 const x = setInterval(function() {
     const now = new Date().getTime();
     const distance = targetDate - now;
 
-    const days = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
-    const hours = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-    const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
-    const seconds = Math.max(0, Math.floor((distance % (1000 * 60)) / 1000));
-
-    document.getElementById("d").innerHTML = days;
-    document.getElementById("h").innerHTML = hours;
-    document.getElementById("m").innerHTML = minutes;
-    document.getElementById("s").innerHTML = seconds;
+    document.getElementById("d").innerHTML = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
+    document.getElementById("h").innerHTML = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+    document.getElementById("m").innerHTML = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+    document.getElementById("s").innerHTML = Math.max(0, Math.floor((distance % (1000 * 60)) / 1000));
 
     if (distance <= 0) {
         clearInterval(x);
-        if(document.getElementById('pageLocked').style.display !== 'none') {
+        if(document.getElementById('pageLocked').classList.contains('show')) {
             switchPage('page1');
         }
     }
 }, 1000);
 
+// Smooth Page Switcher
 function switchPage(id){
-    document.querySelectorAll('.page').forEach(p => {
-        p.classList.remove('show');
-        p.style.display = 'none';
-    });
-    const target = document.getElementById(id);
-    if(target) {
-        target.style.display = 'block';
-        setTimeout(() => target.classList.add('show'), 50);
+    const current = document.querySelector('.page.show');
+    const next = document.getElementById(id);
+    
+    if(current){
+        current.style.opacity = '0';
+        setTimeout(() => {
+            current.classList.remove('show');
+            current.style.display = 'none';
+            next.style.display = 'block';
+            setTimeout(() => next.classList.add('show'), 50);
+        }, 400);
+    } else {
+        next.style.display = 'block';
+        next.classList.add('show');
     }
 }
 
@@ -198,10 +219,9 @@ function startSurprise(){
     userUmur = document.getElementById('umur').value || "Spesial";
     switchPage('page3');
     let time = 3;
-    const tDisplay = document.getElementById('timer');
     const countdown = setInterval(() => {
         time--;
-        tDisplay.textContent = time;
+        document.getElementById('timer').textContent = time;
         if(time <= 0){
             clearInterval(countdown);
             switchPage('page4');
@@ -212,21 +232,35 @@ function startSurprise(){
 function revealCard(){
     document.getElementById('birthdaySong').play();
     const ucapan = document.getElementById('ucapanText');
-    ucapan.innerHTML = `Happy Birthday, <br><span style="color:#ff82a9; font-size:35px;">${userNama}!</span> 🎉<br><br>Gak terasa sekarang udah ${userUmur} tahun aja, aku harap kamu menjadi anak yang baik,ramah,jujur kepada siapa pun, dan kita harus langgeng yahhh...`;
+    ucapan.innerHTML = `Happy Birthday, <br><span style="color:#ff82a9; font-size:35px;">${userNama}!</span> 🎉<br><br>Gak terasa sekarang udah ${userUmur} tahun aja, aku harap kamu menjadi anak yang baik, ramah, jujur kepada siapa pun, dan kita harus langgeng yahhh...`;
     switchPage('page5');
 }
 
 function showGallery(){
-    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    document.getElementById('pageGallery').style.display = 'block';
+    document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('show');
+        p.style.display = 'none';
+    });
+    
+    const gallery = document.getElementById('pageGallery');
+    gallery.style.display = 'block';
     document.body.style.overflowY = 'auto';
+    
+    // Staggered animation untuk foto
+    const items = document.querySelectorAll('.photo-item');
+    items.forEach((item, index) => {
+        setTimeout(() => {
+            item.classList.add('visible');
+        }, index * 200);
+    });
+    
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function showFinalMessage(){
     document.getElementById('pageGallery').style.display = 'none';
-    switchPage('pageFinal');
     document.body.style.overflowY = 'hidden';
+    switchPage('pageFinal');
 }
 
 function kirimKeWA(){
